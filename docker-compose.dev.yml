@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  rabbitmq:
+    image: rabbitmq:management
+    hostname: rabbit
+    ports:
+      - "5672:5672"     # RabbitMQ default port
+      - "15672:15672"   # RabbitMQ management console
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+
+volumes:
+  mongo-data:
+    driver: local
+  rabbitmq_data:
+    driver: local

@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - '3000:3000'
+    environment:
+      MONGODB_URI: mongodb://mongo:27017/myapp
+      RABBITMQ_URI: amqp://guest:guest@rabbitmq:5672
+    depends_on:
+      - mongo
+      - rabbitmq
+
+  mongo:
+    image: mongo:latest
+    ports:
+      - '27017:27017'
+    restart: always
+
+  rabbitmq:
+    image: rabbitmq:management
+    hostname: rabbitmq
+    ports:
+      - '5672:5672'     # Default RabbitMQ port
+      - '15672:15672'   # RabbitMQ management console
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    restart: always
